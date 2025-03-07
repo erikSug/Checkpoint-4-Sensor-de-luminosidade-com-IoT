@@ -7,7 +7,7 @@
 // Configurações - variáveis editáveis
 const char* default_SSID = "Wokwi-GUEST"; // Nome da rede Wi-Fi (No caso utilizando o Wi-Fi do simulador)
 const char* default_PASSWORD = ""; // Senha da rede Wi-Fi (No caso utilizando o Wi-Fi do simulador)
-const char* default_BROKER_MQTT = "52.138.63.73"; // IP do Broker MQTT
+const char* default_BROKER_MQTT = "52.156.16.64"; // IP do Broker MQTT
 const int default_BROKER_PORT = 1883; // Porta do Broker MQTT
 const char* default_TOPICO_SUBSCRIBE = "/TEF/lamp001/cmd"; // Tópico MQTT de escuta
 const char* default_TOPICO_PUBLISH_1 = "/TEF/lamp001/attrs"; // Tópico MQTT de envio de informações para Broker
@@ -27,6 +27,10 @@ char* TOPICO_PUBLISH_1 = const_cast<char*>(default_TOPICO_PUBLISH_1);
 char* TOPICO_PUBLISH_2 = const_cast<char*>(default_TOPICO_PUBLISH_2);
 char* ID_MQTT = const_cast<char*>(default_ID_MQTT);
 int D4 = default_D4;
+
+WiFiClient espClient;
+PubSubClient MQTT(espClient);
+char EstadoSaida = '0';
 
 void initWiFi() {
     delay(10);
@@ -136,7 +140,7 @@ void handleLuminosity() {
     const int potPin = 34;
     int sensorValue = analogRead(potPin);
     // int luminosity = map(sensorValue, 0, 4095, 0, 100); 
-    int luminosity = map(sensorValue, 1005, 17, 0, 100); 
+    int luminosity = map(sensorValue, 4095, 0, 0, 100); 
     String mensagem = String(luminosity);
     Serial.print("Valor da luminosidade: ");
     Serial.println(mensagem.c_str());
